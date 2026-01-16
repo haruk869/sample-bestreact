@@ -2,6 +2,8 @@
 
 Vercel の [React Best Practices](https://vercel.com/blog/introducing-react-best-practices) に沿った Next.js プロジェクトのテンプレートです。
 
+**デモページ公開中**: https://haruk869.github.io/sample-bestreact/
+
 ## 技術スタック
 
 - **Next.js 16** (App Router)

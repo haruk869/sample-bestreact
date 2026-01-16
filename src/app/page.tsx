@@ -265,6 +265,79 @@ export default function Home() {
     └── api.ts          # 型定義`}</pre>
           </div>
         </section>
+
+        {/* Best Practicesの使い方 */}
+        <section>
+          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">
+            React Best Practices の使い方
+          </h2>
+          <div className="bg-white p-6 rounded-xl border space-y-6">
+            <p className="text-sm text-gray-600">
+              React Best Practicesは、AIエージェント（Claude Code、Cursor、Codexなど）に組み込むことで、
+              <strong>コード生成・レビュー時に自動で参照</strong>されます。
+            </p>
+
+            {/* 方法1 */}
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-2">
+                方法1: MCPスキルとして追加（推奨）
+              </h3>
+              <p className="text-sm text-gray-600 mb-2">
+                一度追加すれば、以降は自動でベストプラクティスに沿ったコードが生成されます。
+              </p>
+              <div className="bg-gray-900 text-gray-100 p-3 rounded-lg font-mono text-xs overflow-x-auto">
+                <code>claude mcp add react-best-practices -- npx -y @anthropic-ai/agent-skill react-best-practices</code>
+              </div>
+            </div>
+
+            {/* 方法2 */}
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-2">
+                方法2: プロジェクトに AGENTS.md を配置
+              </h3>
+              <p className="text-sm text-gray-600 mb-2">
+                プロジェクトルートに配置すると、そのプロジェクトで作業する際に自動で参照されます。
+              </p>
+              <div className="bg-gray-900 text-gray-100 p-3 rounded-lg font-mono text-xs overflow-x-auto">
+                <code>curl -o AGENTS.md https://raw.githubusercontent.com/vercel-labs/agent-skills/main/skills/react-best-practices/AGENTS.md</code>
+              </div>
+            </div>
+
+            {/* まとめ表 */}
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b">
+                    <th className="text-left py-2 font-semibold text-gray-900">方法</th>
+                    <th className="text-left py-2 font-semibold text-gray-900">設定</th>
+                    <th className="text-left py-2 font-semibold text-gray-900">参照</th>
+                  </tr>
+                </thead>
+                <tbody className="text-gray-600">
+                  <tr className="border-b">
+                    <td className="py-2">MCPスキル追加</td>
+                    <td className="py-2">1回だけ</td>
+                    <td className="py-2">自動</td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="py-2">AGENTS.md配置</td>
+                    <td className="py-2">プロジェクトごと</td>
+                    <td className="py-2">自動</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2">直接読み込み</td>
+                    <td className="py-2">毎回</td>
+                    <td className="py-2">手動</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p className="text-sm text-gray-500 bg-blue-50 p-3 rounded-lg">
+              エージェントの切り替えは不要。スキルを追加すれば「いつも通り」の指示でOKです。
+            </p>
+          </div>
+        </section>
       </main>
 
       {/* フッター */}
