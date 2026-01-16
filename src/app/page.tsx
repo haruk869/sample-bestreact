@@ -1,65 +1,120 @@
 import { Suspense } from "react";
 import { Button } from "@/components/ui/Button";
+import Image from "next/image";
 
 /**
  * React Best Practices デモページ
  *
- * ポイント:
+ * ベストプラクティス適用:
  * 1. ウォーターフォール排除: Suspenseで各セクションを独立させ並列読み込み
  * 2. 直接インポート: バレルファイルを使わずコンポーネントを直接インポート
  * 3. Server Components: データ取得はサーバーで実行
  */
 
 // ローディングスケルトン
-function UserSkeleton() {
+function CardSkeleton() {
   return (
-    <div className="animate-pulse">
-      <div className="h-6 w-32 bg-gray-200 rounded mb-2" />
-      <div className="h-4 w-48 bg-gray-200 rounded" />
+    <div className="animate-pulse p-4 border rounded-lg bg-white">
+      <div className="h-5 w-3/4 bg-gray-200 rounded mb-2" />
+      <div className="h-4 w-1/2 bg-gray-200 rounded" />
     </div>
   );
 }
 
-function PostsSkeleton() {
+function ProfileSkeleton() {
   return (
-    <div className="animate-pulse space-y-3">
-      {[1, 2, 3].map((i) => (
-        <div key={i} className="h-20 bg-gray-200 rounded" />
-      ))}
+    <div className="animate-pulse flex items-center gap-4 p-6 bg-white rounded-xl border">
+      <div className="w-20 h-20 bg-gray-200 rounded-full" />
+      <div className="flex-1">
+        <div className="h-6 w-32 bg-gray-200 rounded mb-2" />
+        <div className="h-4 w-48 bg-gray-200 rounded" />
+      </div>
     </div>
   );
 }
 
-// サーバーコンポーネント: ユーザー情報（実際のAPIに置き換え）
-async function UserInfo() {
-  // 実際のプロジェクトでは apiClient.get<User>('/api/user') を使用
-  // await new Promise((resolve) => setTimeout(resolve, 1000)); // デモ用遅延
-  const user = { name: "山田太郎", email: "taro@example.com" };
+// GitHubユーザー情報
+async function GitHubProfile() {
+  const user = {
+    login: "haruk869",
+    avatar_url: "https://avatars.githubusercontent.com/u/93960257?v=4",
+    html_url: "https://github.com/haruk869",
+    public_repos: 3,
+  };
 
   return (
-    <div className="p-4 border rounded-lg bg-white shadow-sm">
-      <h2 className="text-xl font-semibold">{user.name}</h2>
-      <p className="text-gray-600">{user.email}</p>
-    </div>
+    <a
+      href={user.html_url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex items-center gap-4 p-6 bg-white rounded-xl border hover:shadow-md transition-shadow"
+    >
+      <Image
+        src={user.avatar_url}
+        alt={user.login}
+        width={80}
+        height={80}
+        className="rounded-full"
+      />
+      <div>
+        <h3 className="text-xl font-bold text-gray-900">{user.login}</h3>
+        <p className="text-gray-600">GitHub / {user.public_repos} repositories</p>
+      </div>
+    </a>
   );
 }
 
-// サーバーコンポーネント: 投稿一覧（実際のAPIに置き換え）
-async function RecentPosts() {
-  // 実際のプロジェクトでは apiClient.get<Post[]>('/api/posts') を使用
-  // await new Promise((resolve) => setTimeout(resolve, 1500)); // デモ用遅延
+// サイトからの最新投稿
+async function LatestPosts() {
   const posts = [
-    { id: "1", title: "React Best Practicesを学ぶ", createdAt: "2024-01-15" },
-    { id: "2", title: "Next.js App Routerの使い方", createdAt: "2024-01-14" },
-    { id: "3", title: "TypeScriptで型安全な開発", createdAt: "2024-01-13" },
+    {
+      id: "1",
+      title: "Suspenseによる並列データ取得",
+      description: "ウォーターフォールを排除し、複数のデータソースを同時に読み込む",
+      tag: "CRITICAL",
+      tagColor: "bg-red-100 text-red-700",
+    },
+    {
+      id: "2",
+      title: "直接インポートでバンドル最適化",
+      description: "バレルファイル(index.ts)を避け、必要なものだけをインポート",
+      tag: "CRITICAL",
+      tagColor: "bg-red-100 text-red-700",
+    },
+    {
+      id: "3",
+      title: "Server Componentsの活用",
+      description: "データ取得をサーバーで実行し、クライアントへのJS転送量を削減",
+      tag: "HIGH",
+      tagColor: "bg-orange-100 text-orange-700",
+    },
+    {
+      id: "4",
+      title: "型安全なAPIクライアント",
+      description: "TypeScriptで一元管理されたfetchラッパーでエラーハンドリング",
+      tag: "HIGH",
+      tagColor: "bg-orange-100 text-orange-700",
+    },
   ];
 
   return (
-    <div className="space-y-3">
+    <div className="grid gap-3">
       {posts.map((post) => (
-        <div key={post.id} className="p-4 border rounded-lg bg-white shadow-sm">
-          <h3 className="font-medium">{post.title}</h3>
-          <p className="text-sm text-gray-500">{post.createdAt}</p>
+        <div
+          key={post.id}
+          className="p-4 bg-white rounded-lg border hover:shadow-sm transition-shadow"
+        >
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <h3 className="font-semibold text-gray-900">{post.title}</h3>
+              <p className="text-sm text-gray-600 mt-1">{post.description}</p>
+            </div>
+            <span
+              className={`text-xs font-medium px-2 py-1 rounded ${post.tagColor}`}
+            >
+              {post.tag}
+            </span>
+          </div>
         </div>
       ))}
     </div>
@@ -68,125 +123,175 @@ async function RecentPosts() {
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4">
-      <main className="max-w-2xl mx-auto space-y-8">
-        <header className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            React Best Practices Demo
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+      {/* ヒーローセクション */}
+      <header className="bg-white border-b">
+        <div className="max-w-3xl mx-auto py-16 px-4 text-center">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            ノーコードからの究極Reactサイト
           </h1>
-          <p className="text-gray-600">
-            Vercelのベストプラクティスに沿った構成
-          </p>
-        </header>
-
-        {/* ベストプラクティス: Suspenseで並列データ取得 */}
-        <section>
-          <h2 className="text-lg font-semibold mb-4 text-gray-800">
-            ユーザー情報
-          </h2>
-          <Suspense fallback={<UserSkeleton />}>
-            <UserInfo />
-          </Suspense>
-        </section>
-
-        <section>
-          <h2 className="text-lg font-semibold mb-4 text-gray-800">
-            最近の投稿
-          </h2>
-          <Suspense fallback={<PostsSkeleton />}>
-            <RecentPosts />
-          </Suspense>
-        </section>
-
-        {/* ボタンコンポーネントのデモ */}
-        <section>
-          <h2 className="text-lg font-semibold mb-4 text-gray-800">
-            UIコンポーネント
-          </h2>
-          <div className="flex gap-3 flex-wrap">
-            <Button variant="primary">Primary</Button>
-            <Button variant="secondary">Secondary</Button>
-            <Button variant="outline">Outline</Button>
-            <Button size="sm">Small</Button>
-            <Button size="lg">Large</Button>
-          </div>
-        </section>
-
-        {/* ベストプラクティス説明 */}
-        <section className="bg-blue-50 p-6 rounded-lg">
-          <h2 className="text-lg font-semibold mb-3 text-blue-900">
-            適用されているベストプラクティス
-          </h2>
-          <ul className="space-y-2 text-sm text-blue-800">
-            <li>
-              ✓ <strong>ウォーターフォール排除</strong>:
-              Suspenseで各セクションを独立させ並列読み込み
-            </li>
-            <li>
-              ✓ <strong>直接インポート</strong>:
-              バレルファイルを使わずコンポーネントを直接インポート
-            </li>
-            <li>
-              ✓ <strong>Server Components</strong>:
-              データ取得はサーバーで実行
-            </li>
-            <li>
-              ✓ <strong>型安全なAPIクライアント</strong>:
-              src/lib/api/client.ts で一元管理
-            </li>
-            <li>
-              ✓ <strong>React Query</strong>:
-              クライアントサイドのキャッシュ管理
-            </li>
-          </ul>
-        </section>
-
-        {/* サイト技術情報 */}
-        <footer className="border-t pt-8 mt-8">
-          <h2 className="text-lg font-semibold mb-4 text-gray-800">
-            このサイトについて
-          </h2>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="bg-white p-4 rounded-lg border">
-              <h3 className="font-medium text-gray-900 mb-2">技術スタック</h3>
-              <ul className="text-sm text-gray-600 space-y-1">
-                <li>Next.js 16 (App Router)</li>
-                <li>TypeScript</li>
-                <li>Tailwind CSS</li>
-                <li>React Query</li>
-              </ul>
-            </div>
-            <div className="bg-white p-4 rounded-lg border">
-              <h3 className="font-medium text-gray-900 mb-2">ホスティング</h3>
-              <ul className="text-sm text-gray-600 space-y-1">
-                <li>GitHub Pages（静的エクスポート）</li>
-                <li>GitHub Actions で自動デプロイ</li>
-                <li>mainブランチへのpushで即時反映</li>
-              </ul>
-            </div>
-          </div>
-          <p className="text-xs text-gray-500 mt-4 text-center">
-            Vercel の{" "}
+          <p className="text-xl text-gray-600">
             <a
               href="https://vercel.com/blog/introducing-react-best-practices"
-              className="underline hover:text-gray-700"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline"
+            >
+              React Best Practices
+            </a>
+            {" "}を使った最適サイトの構築
+          </p>
+        </div>
+      </header>
+
+      <main className="max-w-3xl mx-auto py-12 px-4 space-y-12">
+        {/* 作成者情報 */}
+        <section>
+          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">
+            Created by
+          </h2>
+          <Suspense fallback={<ProfileSkeleton />}>
+            <GitHubProfile />
+          </Suspense>
+        </section>
+
+        {/* 最新投稿（ベストプラクティス一覧） */}
+        <section>
+          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">
+            サイトで実装されているベストプラクティス
+          </h2>
+          <Suspense
+            fallback={
+              <div className="space-y-3">
+                {[1, 2, 3, 4].map((i) => (
+                  <CardSkeleton key={i} />
+                ))}
+              </div>
+            }
+          >
+            <LatestPosts />
+          </Suspense>
+        </section>
+
+        {/* UIコンポーネント */}
+        <section>
+          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">
+            UIコンポーネント
+          </h2>
+          <div className="bg-white p-6 rounded-xl border">
+            <p className="text-sm text-gray-600 mb-4">
+              直接インポート（
+              <code className="bg-gray-100 px-1 rounded text-xs">
+                @/components/ui/Button
+              </code>
+              ）で必要なコンポーネントのみをバンドル。バレルファイル経由のインポートを避けることでTree
+              Shakingが効きやすくなります。
+            </p>
+            <div className="flex gap-3 flex-wrap">
+              <Button variant="primary">Primary</Button>
+              <Button variant="secondary">Secondary</Button>
+              <Button variant="outline">Outline</Button>
+              <Button size="sm">Small</Button>
+              <Button size="lg">Large</Button>
+            </div>
+          </div>
+        </section>
+
+        {/* 技術スタック */}
+        <section>
+          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">
+            技術スタック
+          </h2>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="bg-white p-5 rounded-xl border">
+              <h3 className="font-semibold text-gray-900 mb-3">フレームワーク</h3>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li className="flex items-center gap-2">
+                  <span className="w-2 h-2 bg-black rounded-full" />
+                  Next.js 16 (App Router)
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-2 h-2 bg-blue-500 rounded-full" />
+                  TypeScript
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-2 h-2 bg-cyan-500 rounded-full" />
+                  Tailwind CSS
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-2 h-2 bg-red-500 rounded-full" />
+                  React Query (TanStack)
+                </li>
+              </ul>
+            </div>
+            <div className="bg-white p-5 rounded-xl border">
+              <h3 className="font-semibold text-gray-900 mb-3">インフラ</h3>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li className="flex items-center gap-2">
+                  <span className="w-2 h-2 bg-gray-800 rounded-full" />
+                  GitHub Pages
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-2 h-2 bg-green-500 rounded-full" />
+                  GitHub Actions
+                </li>
+                <li className="flex items-center gap-2">
+                  <span className="w-2 h-2 bg-purple-500 rounded-full" />
+                  Static Export (SSG)
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* コード構成 */}
+        <section>
+          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">
+            プロジェクト構成
+          </h2>
+          <div className="bg-gray-900 text-gray-100 p-5 rounded-xl font-mono text-sm overflow-x-auto">
+            <pre>{`src/
+├── app/
+│   ├── layout.tsx      # Providers統合
+│   ├── page.tsx        # このページ
+│   └── providers.tsx   # React Query
+├── components/
+│   └── ui/
+│       └── Button.tsx  # 直接インポート用
+├── lib/
+│   └── api/
+│       └── client.ts   # 型安全APIクライアント
+└── types/
+    └── api.ts          # 型定義`}</pre>
+          </div>
+        </section>
+      </main>
+
+      {/* フッター */}
+      <footer className="border-t bg-white">
+        <div className="max-w-3xl mx-auto py-8 px-4 text-center text-sm text-gray-500">
+          <p>
+            Built with{" "}
+            <a
+              href="https://vercel.com/blog/introducing-react-best-practices"
+              className="text-blue-600 hover:underline"
               target="_blank"
               rel="noopener noreferrer"
             >
               React Best Practices
             </a>
-            {" "}に基づいて構築 /{" "}
+            {" / "}
             <a
               href="https://github.com/haruk869/sample-bestreact"
-              className="underline hover:text-gray-700"
+              className="text-blue-600 hover:underline"
               target="_blank"
               rel="noopener noreferrer"
             >
-              GitHub
+              View on GitHub
             </a>
           </p>
-        </footer>
-      </main>
+        </div>
+      </footer>
     </div>
   );
 }
