@@ -9,29 +9,26 @@ import Image from "next/image";
  * 1. ウォーターフォール排除: Suspenseで各セクションを独立させ並列読み込み
  * 2. 直接インポート: バレルファイルを使わずコンポーネントを直接インポート
  * 3. Server Components: データ取得はサーバーで実行
+ * 4. 静的JSXのホイスト: スケルトンをコンポーネント外に定義し再生成を回避
  */
 
-// ローディングスケルトン
-function CardSkeleton() {
-  return (
-    <div className="animate-pulse p-4 border rounded-lg bg-white">
-      <div className="h-5 w-3/4 bg-gray-200 rounded mb-2" />
-      <div className="h-4 w-1/2 bg-gray-200 rounded" />
-    </div>
-  );
-}
+// ローディングスケルトン（静的JSXをホイスト - 6.3 Hoist Static JSX Elements）
+const cardSkeleton = (
+  <div className="animate-pulse p-4 border rounded-lg bg-white">
+    <div className="h-5 w-3/4 bg-gray-200 rounded mb-2" />
+    <div className="h-4 w-1/2 bg-gray-200 rounded" />
+  </div>
+);
 
-function ProfileSkeleton() {
-  return (
-    <div className="animate-pulse flex items-center gap-4 p-6 bg-white rounded-xl border">
-      <div className="w-20 h-20 bg-gray-200 rounded-full" />
-      <div className="flex-1">
-        <div className="h-6 w-32 bg-gray-200 rounded mb-2" />
-        <div className="h-4 w-48 bg-gray-200 rounded" />
-      </div>
+const profileSkeleton = (
+  <div className="animate-pulse flex items-center gap-4 p-6 bg-white rounded-xl border">
+    <div className="w-20 h-20 bg-gray-200 rounded-full" />
+    <div className="flex-1">
+      <div className="h-6 w-32 bg-gray-200 rounded mb-2" />
+      <div className="h-4 w-48 bg-gray-200 rounded" />
     </div>
-  );
-}
+  </div>
+);
 
 // GitHubユーザー情報
 async function GitHubProfile() {
@@ -150,7 +147,7 @@ export default function Home() {
           <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">
             Created by
           </h2>
-          <Suspense fallback={<ProfileSkeleton />}>
+          <Suspense fallback={profileSkeleton}>
             <GitHubProfile />
           </Suspense>
         </section>
@@ -164,7 +161,7 @@ export default function Home() {
             fallback={
               <div className="space-y-3">
                 {[1, 2, 3, 4].map((i) => (
-                  <CardSkeleton key={i} />
+                  <div key={i}>{cardSkeleton}</div>
                 ))}
               </div>
             }
