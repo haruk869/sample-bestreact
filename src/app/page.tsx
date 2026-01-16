@@ -336,6 +336,33 @@ export default function Home() {
             <p className="text-sm text-gray-500 bg-blue-50 p-3 rounded-lg">
               エージェントの切り替えは不要。スキルを追加すれば「いつも通り」の指示でOKです。
             </p>
+
+            {/* このリポジトリでの設定 */}
+            <div className="border-t pt-6">
+              <h3 className="font-semibold text-gray-900 mb-2">
+                このリポジトリでの設定
+              </h3>
+              <p className="text-sm text-gray-600 mb-3">
+                このプロジェクトでは、プロジェクト専用のMCP設定（
+                <code className="bg-gray-100 px-1 rounded text-xs">.mcp.json</code>
+                ）を使用しています。リポジトリをクローンすれば、自動でベストプラクティスが適用されます。
+              </p>
+              <div className="bg-gray-900 text-gray-100 p-3 rounded-lg font-mono text-xs overflow-x-auto">
+                <pre>{`# .mcp.json
+{
+  "mcpServers": {
+    "react-best-practices": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@anthropic-ai/agent-skill", "react-best-practices"]
+    }
+  }
+}`}</pre>
+              </div>
+              <p className="text-xs text-gray-500 mt-2">
+                プロジェクト専用設定: <code className="bg-gray-100 px-1 rounded">claude mcp add -s project ...</code>
+              </p>
+            </div>
           </div>
         </section>
       </main>

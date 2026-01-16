@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "react-best-practices": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@anthropic-ai/agent-skill",
+        "react-best-practices"
+      ],
+      "env": {}
+    }
+  }
+}
