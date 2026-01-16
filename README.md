@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sample Best React
 
-## Getting Started
+Vercel の [React Best Practices](https://vercel.com/blog/introducing-react-best-practices) に沿った Next.js プロジェクトのテンプレートです。
 
-First, run the development server:
+## 技術スタック
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Next.js 16** (App Router)
+- **TypeScript**
+- **Tailwind CSS**
+- **React Query** (TanStack Query)
+
+## プロジェクト構成
+
+```
+src/
+├── app/                      # App Router
+│   ├── layout.tsx            # ルートレイアウト（Provider統合）
+│   ├── page.tsx              # ホームページ（ベストプラクティス実装例）
+│   ├── providers.tsx         # React Query Provider
+│   └── globals.css           # グローバルスタイル
+├── components/
+│   └── ui/
+│       └── Button.tsx        # UIコンポーネント（直接インポート用）
+├── lib/
+│   └── api/
+│       └── client.ts         # 型安全なAPIクライアント
+└── types/
+    └── api.ts                # API レスポンス型定義
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 適用されているベストプラクティス
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 1. ウォーターフォール排除 (CRITICAL)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+順次 `await` による遅延を避け、Suspense で各セクションを独立させて並列読み込みを実現。
 
-## Learn More
+```tsx
+// 各コンポーネントが独立してデータ取得 → 並列実行
+<Suspense fallback={<UserSkeleton />}>
+  <UserInfo />
+</Suspense>
+<Suspense fallback={<PostsSkeleton />}>
+  <RecentPosts />
+</Suspense>
+```
 
-To learn more about Next.js, take a look at the following resources:
+### 2. バンドルサイズ最適化 (CRITICAL)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+バレルファイル（index.ts）からのインポートを避け、直接インポートを使用。
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```tsx
+// NG: import { Button } from '@/components';
+// OK:
+import { Button } from '@/components/ui/Button';
+```
 
-## Deploy on Vercel
+### 3. 型安全な API クライアント
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+`src/lib/api/client.ts` で一元管理。エラーハンドリングと型安全性を確保。
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```tsx
+import { apiClient } from '@/lib/api/client';
+import type { User } from '@/types/api';
+
+const user = await apiClient.get<User>('/api/users/1');
+```
+
+### 4. Server Components
+
+データ取得はサーバーコンポーネントで実行し、クライアントへの JavaScript 転送量を削減。
+
+### 5. React Query によるキャッシュ管理
+
+クライアントサイドのデータキャッシュと再取得を効率的に管理。
+
+## セットアップ
+
+```bash
+# 依存関係インストール
+npm install
+
+# 開発サーバー起動
+npm run dev
+
+# ビルド
+npm run build
+
+# Lint
+npm run lint
+```
+
+開発サーバー起動後、http://localhost:3000 でアクセス。
+
+## API 連携の設定
+
+REST API バックエンドと連携する場合は `.env.local` を作成:
+
+```
+NEXT_PUBLIC_API_URL=https://your-api.example.com
+```
+
+## 参考リンク
+
+- [React Best Practices (Vercel Blog)](https://vercel.com/blog/introducing-react-best-practices)
+- [AGENTS.md (全ルール)](https://github.com/vercel-labs/agent-skills/blob/main/skills/react-best-practices/AGENTS.md)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [TanStack Query](https://tanstack.com/query/latest)
