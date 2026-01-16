@@ -140,6 +140,52 @@ export default function Home() {
             </li>
           </ul>
         </section>
+
+        {/* サイト技術情報 */}
+        <footer className="border-t pt-8 mt-8">
+          <h2 className="text-lg font-semibold mb-4 text-gray-800">
+            このサイトについて
+          </h2>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="bg-white p-4 rounded-lg border">
+              <h3 className="font-medium text-gray-900 mb-2">技術スタック</h3>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>Next.js 16 (App Router)</li>
+                <li>TypeScript</li>
+                <li>Tailwind CSS</li>
+                <li>React Query</li>
+              </ul>
+            </div>
+            <div className="bg-white p-4 rounded-lg border">
+              <h3 className="font-medium text-gray-900 mb-2">ホスティング</h3>
+              <ul className="text-sm text-gray-600 space-y-1">
+                <li>GitHub Pages（静的エクスポート）</li>
+                <li>GitHub Actions で自動デプロイ</li>
+                <li>mainブランチへのpushで即時反映</li>
+              </ul>
+            </div>
+          </div>
+          <p className="text-xs text-gray-500 mt-4 text-center">
+            Vercel の{" "}
+            <a
+              href="https://vercel.com/blog/introducing-react-best-practices"
+              className="underline hover:text-gray-700"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              React Best Practices
+            </a>
+            {" "}に基づいて構築 /{" "}
+            <a
+              href="https://github.com/haruk869/sample-bestreact"
+              className="underline hover:text-gray-700"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub
+            </a>
+          </p>
+        </footer>
       </main>
     </div>
   );
