@@ -91,7 +91,20 @@ npm run build
 npm run lint
 ```
 
-開発サーバー起動後、http://localhost:3000 でアクセス。
+開発サーバー起動後、http://localhost:3003 でアクセス。
+
+## デプロイ
+
+GitHub Pages へのデプロイは以下のタイミングで自動実行されます：
+
+- `main` ブランチへの push
+- `v*` タグの push（例: `v1.0.0`）
+
+```bash
+# タグを打ってデプロイ
+git tag v1.0.0
+git push origin v1.0.0
+```
 
 ## API 連携の設定
 
