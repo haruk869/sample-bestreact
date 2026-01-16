@@ -38,13 +38,13 @@ async function GitHubProfile() {
   const user = {
     login: "haruk869",
     avatar_url: "https://avatars.githubusercontent.com/u/93960257?v=4",
-    html_url: "https://github.com/haruk869",
+    repo_url: "https://github.com/haruk869/sample-bestreact",
     public_repos: 3,
   };
 
   return (
     <a
-      href={user.html_url}
+      href={user.repo_url}
       target="_blank"
       rel="noopener noreferrer"
       className="flex items-center gap-4 p-6 bg-white rounded-xl border hover:shadow-md transition-shadow"
