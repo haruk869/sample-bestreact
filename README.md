@@ -114,9 +114,24 @@ REST API バックエンドと連携する場合は `.env.local` を作成:
 NEXT_PUBLIC_API_URL=https://your-api.example.com
 ```
 
+## React Best Practices の使い方
+
+AIエージェント（Claude Code、Cursor、Codex など）でスキルを有効にする方法：
+
+```bash
+# 推奨: add-skill コマンドでインストール
+npx add-skill vercel-labs/agent-skills --skill vercel-react-best-practices
+
+# または手動配置
+git clone https://github.com/vercel-labs/agent-skills.git
+cp -r agent-skills/skills/vercel-react-best-practices .claude/skills/
+```
+
+このリポジトリでは `.claude/skills/vercel-react-best-practices/` にスキルファイルを配置済みです。
+
 ## 参考リンク
 
 - [React Best Practices (Vercel Blog)](https://vercel.com/blog/introducing-react-best-practices)
-- [AGENTS.md (全ルール)](https://github.com/vercel-labs/agent-skills/blob/main/skills/react-best-practices/AGENTS.md)
+- [vercel-labs/agent-skills (GitHub)](https://github.com/vercel-labs/agent-skills)
 - [Next.js Documentation](https://nextjs.org/docs)
 - [TanStack Query](https://tanstack.com/query/latest)

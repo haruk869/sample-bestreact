@@ -125,7 +125,7 @@ export default function Home() {
       <header className="bg-white border-b">
         <div className="max-w-3xl mx-auto py-16 px-4 text-center">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            ノーコードからの究極Reactサイト
+            React Best Practices なサイト作成‼️
           </h1>
           <p className="text-xl text-gray-600">
             <a
@@ -277,26 +277,27 @@ export default function Home() {
             {/* 方法1 */}
             <div>
               <h3 className="font-semibold text-gray-900 mb-2">
-                方法1: MCPスキルとして追加（推奨）
+                方法1: add-skill コマンドでインストール（推奨）
               </h3>
               <p className="text-sm text-gray-600 mb-2">
-                一度追加すれば、以降は自動でベストプラクティスに沿ったコードが生成されます。
+                一度インストールすれば、以降は自動でベストプラクティスに沿ったコードが生成されます。
               </p>
               <div className="bg-gray-900 text-gray-100 p-3 rounded-lg font-mono text-xs overflow-x-auto">
-                <code>claude mcp add react-best-practices -- npx -y @anthropic-ai/agent-skill react-best-practices</code>
+                <code>npx add-skill vercel-labs/agent-skills --skill vercel-react-best-practices</code>
               </div>
             </div>
 
             {/* 方法2 */}
             <div>
               <h3 className="font-semibold text-gray-900 mb-2">
-                方法2: プロジェクトに AGENTS.md を配置
+                方法2: 手動でファイルを配置
               </h3>
               <p className="text-sm text-gray-600 mb-2">
-                プロジェクトルートに配置すると、そのプロジェクトで作業する際に自動で参照されます。
+                <code className="bg-gray-100 px-1 rounded text-xs">.claude/skills/</code>
+                ディレクトリにスキルファイルをコピーすると、そのプロジェクトで自動参照されます。
               </p>
               <div className="bg-gray-900 text-gray-100 p-3 rounded-lg font-mono text-xs overflow-x-auto">
-                <code>curl -o AGENTS.md https://raw.githubusercontent.com/vercel-labs/agent-skills/main/skills/react-best-practices/AGENTS.md</code>
+                <code>git clone https://github.com/vercel-labs/agent-skills.git && cp -r agent-skills/skills/vercel-react-best-practices .claude/skills/</code>
               </div>
             </div>
 
@@ -312,19 +313,19 @@ export default function Home() {
                 </thead>
                 <tbody className="text-gray-600">
                   <tr className="border-b">
-                    <td className="py-2">MCPスキル追加</td>
+                    <td className="py-2">add-skill（グローバル）</td>
                     <td className="py-2">1回だけ</td>
                     <td className="py-2">自動</td>
                   </tr>
                   <tr className="border-b">
-                    <td className="py-2">AGENTS.md配置</td>
+                    <td className="py-2">add-skill（プロジェクト）</td>
                     <td className="py-2">プロジェクトごと</td>
                     <td className="py-2">自動</td>
                   </tr>
                   <tr>
-                    <td className="py-2">直接読み込み</td>
-                    <td className="py-2">毎回</td>
-                    <td className="py-2">手動</td>
+                    <td className="py-2">手動配置</td>
+                    <td className="py-2">プロジェクトごと</td>
+                    <td className="py-2">自動</td>
                   </tr>
                 </tbody>
               </table>
@@ -340,26 +341,88 @@ export default function Home() {
                 このリポジトリでの設定
               </h3>
               <p className="text-sm text-gray-600 mb-3">
-                このプロジェクトでは、プロジェクト専用のMCP設定（
-                <code className="bg-gray-100 px-1 rounded text-xs">.mcp.json</code>
-                ）を使用しています。リポジトリをクローンすれば、自動でベストプラクティスが適用されます。
+                このプロジェクトでは、
+                <code className="bg-gray-100 px-1 rounded text-xs">.claude/skills/vercel-react-best-practices/</code>
+                にスキルファイルを配置しています。リポジトリをクローンすれば、自動でベストプラクティスが適用されます。
               </p>
               <div className="bg-gray-900 text-gray-100 p-3 rounded-lg font-mono text-xs overflow-x-auto">
-                <pre>{`# .mcp.json
-{
-  "mcpServers": {
-    "react-best-practices": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@anthropic-ai/agent-skill", "react-best-practices"]
-    }
-  }
-}`}</pre>
+                <pre>{`.claude/
+└── skills/
+    └── vercel-react-best-practices/
+        ├── SKILL.md       # スキル定義
+        └── references/    # 詳細ガイドライン`}</pre>
               </div>
-              <p className="text-xs text-gray-500 mt-2">
-                プロジェクト専用設定: <code className="bg-gray-100 px-1 rounded">claude mcp add -s project ...</code>
-              </p>
             </div>
+          </div>
+        </section>
+
+        {/* レビュー評価 */}
+        <section>
+          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-4">
+            このプロジェクトのレビュー評価
+          </h2>
+          <div className="bg-white p-6 rounded-xl border space-y-6">
+            <p className="text-sm text-gray-600">
+              React Best Practices スキルによる自動レビュー結果です。
+            </p>
+
+            {/* 評価サマリー */}
+            <div className="flex items-center gap-4 p-4 bg-green-50 rounded-lg border border-green-200">
+              <div className="text-4xl font-bold text-green-600">A</div>
+              <div>
+                <p className="font-semibold text-green-800">ベストプラクティス準拠</p>
+                <p className="text-sm text-green-700">CRITICAL・HIGH の項目をすべてクリア</p>
+              </div>
+            </div>
+
+            {/* 詳細評価 */}
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b">
+                    <th className="text-left py-2 font-semibold text-gray-900">カテゴリ</th>
+                    <th className="text-left py-2 font-semibold text-gray-900">優先度</th>
+                    <th className="text-left py-2 font-semibold text-gray-900">状態</th>
+                  </tr>
+                </thead>
+                <tbody className="text-gray-600">
+                  <tr className="border-b">
+                    <td className="py-2">ウォーターフォール排除</td>
+                    <td className="py-2"><span className="text-xs font-medium px-2 py-1 rounded bg-red-100 text-red-700">CRITICAL</span></td>
+                    <td className="py-2 text-green-600">✓ Suspense境界で並列化</td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="py-2">バンドルサイズ最適化</td>
+                    <td className="py-2"><span className="text-xs font-medium px-2 py-1 rounded bg-red-100 text-red-700">CRITICAL</span></td>
+                    <td className="py-2 text-green-600">✓ 直接インポート使用</td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="py-2">Server Components</td>
+                    <td className="py-2"><span className="text-xs font-medium px-2 py-1 rounded bg-orange-100 text-orange-700">HIGH</span></td>
+                    <td className="py-2 text-green-600">✓ データ取得はサーバーで実行</td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="py-2">React Query設定</td>
+                    <td className="py-2"><span className="text-xs font-medium px-2 py-1 rounded bg-orange-100 text-orange-700">HIGH</span></td>
+                    <td className="py-2 text-green-600">✓ useState で SSR 状態共有防止</td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="py-2">静的JSXホイスト</td>
+                    <td className="py-2"><span className="text-xs font-medium px-2 py-1 rounded bg-yellow-100 text-yellow-700">MEDIUM</span></td>
+                    <td className="py-2 text-green-600">✓ スケルトンをコンポーネント外に定義</td>
+                  </tr>
+                  <tr>
+                    <td className="py-2">型安全なAPIクライアント</td>
+                    <td className="py-2"><span className="text-xs font-medium px-2 py-1 rounded bg-yellow-100 text-yellow-700">MEDIUM</span></td>
+                    <td className="py-2 text-green-600">✓ ジェネリクスで型安全性確保</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <p className="text-xs text-gray-500">
+              このレビューは <code className="bg-gray-100 px-1 rounded">vercel-react-best-practices</code> スキルにより実施されました。
+            </p>
           </div>
         </section>
       </main>
